@@ -70,7 +70,7 @@ JNIEXPORT int JNICALL Java_org_aluminati3555_aluminatilidar_lidar_LIDAR_nativeRe
 		return -1;
 	}
 
-	size_t nodeCount = NODES / sizeof(rplidar_response_measurement_node_hq_t);
+	size_t nodeCount = NODES;
 	u_result result = lidar->grabScanDataHq(nodes, nodeCount);
 
 	if (IS_FAIL(result))
