@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPLv3
+ */
+
 #include "org_aluminati3555_aluminatilidar_lidar_LIDAR.h"
 
 extern int nativeStart(JNIEnv* env, jobject obj);
