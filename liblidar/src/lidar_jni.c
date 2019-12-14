@@ -4,13 +4,13 @@
 
 #include "org_aluminati3555_aluminatilidar_lidar_LIDAR.h"
 
-extern int nativeStart(JNIEnv* env, jobject obj);
+extern int nativeStart(JNIEnv* env, jobject obj, jstring device);
 extern int nativeStop(JNIEnv* env, jobject obj);
 extern int nativeRead(JNIEnv* env, jobject obj, jintArray buffer);
 
-JNIEXPORT jint JNICALL Java_org_aluminati3555_aluminatilidar_lidar_LIDAR_nativeStart(JNIEnv* env, jobject obj)
+JNIEXPORT jint JNICALL Java_org_aluminati3555_aluminatilidar_lidar_LIDAR_nativeStart(JNIEnv* env, jobject obj, jstring device)
 {
-	return nativeStart(env, obj);
+	return nativeStart(env, obj, device);
 }
 
 JNIEXPORT jint JNICALL Java_org_aluminati3555_aluminatilidar_lidar_LIDAR_nativeStop(JNIEnv* env, jobject obj)

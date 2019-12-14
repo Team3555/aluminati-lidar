@@ -29,7 +29,7 @@ package org.aluminati3555.aluminatilidar.lidar;
  */
 public class LIDAR {
 	// Native
-	private static native int nativeStart();
+	private static native int nativeStart(String device);
 
 	private static native int nativeStop();
 

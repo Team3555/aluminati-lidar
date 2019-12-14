@@ -13,7 +13,7 @@ using namespace rp::standalone::rplidar;
 static RPlidarDriver* lidar;
 static rplidar_response_measurement_node_hq_t* nodes;
 
-extern "C" int nativeStart(JNIEnv* env, jobject obj)
+extern "C" int nativeStart(JNIEnv* env, jobject obj, jstring device)
 {
 	nodes = new rplidar_response_measurement_node_hq_t[NODES];
 	if (nodes == nullptr)
@@ -22,7 +22,7 @@ extern "C" int nativeStart(JNIEnv* env, jobject obj)
 	}
 
 	lidar = RPlidarDriver::CreateDriver();
-	u_result result = lidar->connect("/dev/ttyUSB0", BAUD_RATE);
+	u_result result = lidar->connect(env->GetStringUTFChars(device, NULL), BAUD_RATE);
 
 	if (!IS_OK(result))
 	{
