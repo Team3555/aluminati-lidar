@@ -1,6 +1,6 @@
 default:
 	javac -h . LIDAR.java
-	gcc hsl.c -shared -O3 -I/usr/lib/jvm/java-11-openjdk-armhf/include -I/usr/lib/jvm/java-11-openjdk-armhf/include/linux -o liblidar.so
+	g++ /home/pi/liblidar/rplidar/src/*.cpp lidar.cpp -shared -O3 -I/usr/lib/jvm/java-11-openjdk-armhf/include -I/usr/lib/jvm/java-11-openjdk-armhf/include/linux -I/home/pi/liblidar/rplidar/src -I/home/pi/liblidar/rplidar/include -lstdc++ -lpthread -o liblidar.so
 
 clean:
 	rm org_aluminati3555_aluminatilidar_lidar_LIDAR.h
@@ -8,4 +8,4 @@ clean:
 	rm liblidar.so
 
 install:
-	cp liblidar.so ~/AluminatiVision/jni
+	cp liblidar.so ~/AluminatiLidar/jni
