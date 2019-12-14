@@ -6,16 +6,14 @@
 #define BAUD_RATE	115200
 
 #include <rplidar.h>
-#include <stdio.h>
-
-#include "org_aluminati3555_aluminatilidar_lidar_LIDAR.h"
+#include <jni.h>
 
 using namespace rp::standalone::rplidar;
 
 static RPlidarDriver* lidar;
 static rplidar_response_measurement_node_hq_t* nodes;
 
-JNIEXPORT int JNICALL Java_org_aluminati3555_aluminatilidar_lidar_LIDAR_nativeStart(JNIEnv* env, jobject obj)
+extern "C" int nativeStart(JNIEnv* env, jobject obj)
 {
 	nodes = new rplidar_response_measurement_node_hq_t[NODES];
 	if (nodes == nullptr)
@@ -40,7 +38,7 @@ JNIEXPORT int JNICALL Java_org_aluminati3555_aluminatilidar_lidar_LIDAR_nativeSt
 	return 0;
 }
 
-JNIEXPORT int JNICALL Java_org_aluminati3555_aluminatilidar_lidar_LIDAR_nativeStop(JNIEnv* env, jobject obj)
+extern "C" int nativeStop(JNIEnv* env, jobject obj)
 {
 	if (lidar == nullptr || nodes == nullptr)
 	{
@@ -56,7 +54,7 @@ JNIEXPORT int JNICALL Java_org_aluminati3555_aluminatilidar_lidar_LIDAR_nativeSt
 	return 0;
 }
 
-JNIEXPORT int JNICALL Java_org_aluminati3555_aluminatilidar_lidar_LIDAR_nativeRead(JNIEnv* env, jobject obj, jintArray buffer)
+extern "C" int nativeRead(JNIEnv* env, jobject obj, jintArray buffer)
 {
 	jsize length = env->GetArrayLength(buffer);
 	if (length < NODES * 3)
