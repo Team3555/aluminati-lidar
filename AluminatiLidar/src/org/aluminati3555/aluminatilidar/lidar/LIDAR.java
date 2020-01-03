@@ -34,7 +34,62 @@ public class LIDAR {
 	private static native int nativeStop();
 
 	private static native int nativeRead(int[] buffer);
-	
+
+	/**
+	 * Returns the path of the device
+	 * 
+	 * @param number
+	 * @return
+	 */
+	private static String getDeviceByNumber(int number) {
+		return "/dev/ttyUSB" + number;
+	}
+
 	// Library
 	public static final String LIBRARY_NAME = "lidar";
+
+	/**
+	 * Starts the lidar scanner
+	 * 
+	 * @param device
+	 * @throws LIDARException
+	 */
+	public static synchronized void start(int device) throws LIDARException {
+		String deviceName = getDeviceByNumber(device);
+
+		int result = nativeStart(deviceName);
+		if (result != 0) {
+			throw new LIDARException("Unable to access device");
+		}
+	}
+
+	/**
+	 * Stops the driver
+	 * 
+	 * @throws LIDARException
+	 */
+	public static synchronized void stop() throws LIDARException {
+		int result = nativeStop();
+		if (result != 0) {
+			throw new LIDARException("Unable to access device");
+		}
+	}
+
+	/**
+	 * Reads data from the LIDAR sensor
+	 * 
+	 * @param buffer
+	 */
+	public static synchronized void read(LIDARBuffer buffer) throws LIDARException {
+		for (int i = 0; i < buffer.getData().length; i++) {
+			buffer.getData()[i] = 0;
+		}
+		
+		int result = nativeRead(buffer.getData());
+		if (result != 0) {
+			throw new LIDARException("Unable to access device");
+		}
+		
+		buffer.update();
+	}
 }

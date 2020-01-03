@@ -20,34 +20,17 @@
  * SOFTWARE.
  */
 
-package org.aluminati3555.aluminatilidar;
-
-import org.aluminati3555.aluminatilidar.lidar.LIDAR;
-import org.aluminati3555.aluminatilidar.lidar.LIDARBuffer;
+package org.aluminati3555.aluminatilidar.lidar;
 
 /**
- * Main class of the AluminatiLidar object detection program
+ * An exception to be thrown when there is a problem with the LIDAR sensor
  * 
  * @author Caleb Heydon
  */
-public class AluminatiLidar {
-	static {
-		System.loadLibrary(LIDAR.LIBRARY_NAME);
-	}
+public class LIDARException extends RuntimeException {
+	private static final long serialVersionUID = 6175732820464252096L;
 	
-	private static void printBanner() {
-		System.out.println("AluminatiLidar\nCopyright (c) 2019 Team 3555\n");
-	}
-	
-	public static void main(String[] args) {
-		printBanner();
-		
-		LIDAR.start(0);
-		
-		LIDARBuffer buffer = new LIDARBuffer();
-		while(true) {
-			LIDAR.read(buffer);
-			System.out.println(buffer.getPoints().size());
-		}
+	public LIDARException(String message) {
+		super(message);
 	}
 }

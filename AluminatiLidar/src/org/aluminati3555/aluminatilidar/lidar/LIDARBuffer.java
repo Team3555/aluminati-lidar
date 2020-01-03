@@ -20,34 +20,72 @@
  * SOFTWARE.
  */
 
-package org.aluminati3555.aluminatilidar;
+package org.aluminati3555.aluminatilidar.lidar;
 
-import org.aluminati3555.aluminatilidar.lidar.LIDAR;
-import org.aluminati3555.aluminatilidar.lidar.LIDARBuffer;
+import java.util.ArrayList;
 
 /**
- * Main class of the AluminatiLidar object detection program
+ * This class interprets the data from the LIDAR sensor
  * 
  * @author Caleb Heydon
  */
-public class AluminatiLidar {
-	static {
-		System.loadLibrary(LIDAR.LIBRARY_NAME);
+public class LIDARBuffer {
+	private static final int BUFFER_SIZE = 8192;
+
+	private int[] data;
+	private ArrayList<Point> points;
+
+	/**
+	 * Returns the integer array as a buffer
+	 * 
+	 * @return
+	 */
+	public int[] getData() {
+		return data;
 	}
-	
-	private static void printBanner() {
-		System.out.println("AluminatiLidar\nCopyright (c) 2019 Team 3555\n");
+
+	/**
+	 * Returns the list of points
+	 * 
+	 * @return
+	 */
+	public ArrayList<Point> getPoints() {
+		synchronized (points) {
+			return points;
+		}
 	}
-	
-	public static void main(String[] args) {
-		printBanner();
-		
-		LIDAR.start(0);
-		
-		LIDARBuffer buffer = new LIDARBuffer();
-		while(true) {
-			LIDAR.read(buffer);
-			System.out.println(buffer.getPoints().size());
+
+	/**
+	 * Decodes the data from the buffer
+	 */
+	public void update() {
+		synchronized (points) {
+			points.clear();
+
+			for (int i = 0; i < data.length; i += 3) {
+				Point point = new Point(data[i], data[i + 1], data[i + 2]);
+
+				if (point.distance != 0) {
+					points.add(point);
+				}
+			}
+		}
+	}
+
+	public LIDARBuffer() {
+		data = new int[BUFFER_SIZE];
+		points = new ArrayList<Point>();
+	}
+
+	public static class Point {
+		public int angle;
+		public int distance;
+		public int quality;
+
+		public Point(int angle, int distance, int quality) {
+			this.angle = angle;
+			this.distance = distance;
+			this.quality = quality;
 		}
 	}
 }
